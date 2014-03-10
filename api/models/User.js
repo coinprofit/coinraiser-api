@@ -22,9 +22,14 @@ module.exports = {
       type: 'string',
       required: true
     },
+    provider: {
+      type: 'string'
+    },
+    provider_id:{
+      type: 'string'
+    },
     coinbase_access: 'string',
     coinbase_refresh: 'string'
-
   }
 
 };

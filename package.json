@@ -8,7 +8,9 @@
     "grunt": "0.4.1",
     "sails-disk": "~0.9.0",
     "ejs": "0.8.4",
-    "optimist": "0.3.4"
+    "optimist": "0.3.4",
+    "passport-local": "~1.0.0",
+    "passport": "~0.2.0"
   },
   "scripts": {
     "start": "node app.js",
@@ -22,6 +24,6 @@
     "type": "git",
     "url": "https://github.com/coinprofit/coinprofit-api.git"
   },
-  "author": "",
+  "author": "Tauren Mills",
   "license": ""
 }

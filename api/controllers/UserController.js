@@ -15,10 +15,44 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-module.exports = {
-    
-  
+var passport = require('passport');
 
+module.exports = {
+
+  login: function (req,res) {
+    res.view();
+  },
+
+  passport_local: function(req, res) {
+    console.log('Passport Local');
+
+    passport.authenticate('local', function(err, user, info) {
+      if ((err) || (!user)) {
+        console.log('Passport Local err', err, user);
+        res.forbidden('You are not permitted to perform this action.');
+        // res.redirect('/user/login');
+        return;
+      }
+
+      req.logIn(user, function(err) {
+        console.log('Passport Local logIn', err);
+        if (err) {
+          res.forbidden('You are not permitted to perform this action.');
+          // res.redirect('/user/login');
+          return;
+        }
+
+        // res.redirect('/');
+        return;
+      });
+    })(req, res);
+  },
+
+  logout: function (req,res)
+  {
+    req.logout();
+    // res.redirect('/');
+  },
 
   /**
    * Overrides for the settings in `config/controllers.js`
@@ -26,5 +60,5 @@ module.exports = {
    */
   _config: {}
 
-  
+
 };
