@@ -1,0 +1,27 @@
+{
+  "name": "coinraiser-api",
+  "private": true,
+  "version": "0.0.0",
+  "description": "CoinRaiser - Bitcoin Fundraising via Coinbase",
+  "dependencies": {
+    "sails": "0.9.11",
+    "grunt": "0.4.1",
+    "sails-disk": "~0.9.0",
+    "ejs": "0.8.4",
+    "optimist": "0.3.4"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "debug": "node debug app.js"
+  },
+  "engines": {
+    "node": "0.10.x"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coinprofit/coinprofit-api.git"
+  },
+  "author": "",
+  "license": ""
+}
