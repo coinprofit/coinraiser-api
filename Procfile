@@ -1,1 +1,1 @@
-web: npm prune
+web: npm start
