@@ -18,6 +18,8 @@
  * http://links.sailsjs.org/docs/config/connections
  */
 
+console.log('ENVIRONMENT', process.env);
+
 module.exports.connections = {
 
   // Local disk storage for DEVELOPMENT ONLY
