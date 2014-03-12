@@ -36,7 +36,7 @@ module.exports.connections = {
 
   mongo: {
     module: 'sails-mongo',
-    schema: true
+    schema: true,
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
