@@ -1,2 +1,3 @@
-# coinraiser-apix
-### a Sails application
+# coinraiser-api
+
+# [Sails](http://sailsjs.org) application
