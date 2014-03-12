@@ -37,13 +37,11 @@ module.exports.connections = {
   mongo: {
     module: 'sails-mongo',
     schema: true
-    // host: 'ds033569.mongolab.com',
-    // port: 33569,
-    // // Psst.. You can put your password in config/local.js instead
-    // // so you don't inadvertently push it up if you're using version control
-    // user: 'raiser',
-    // password: '7WUp3UZMoY41',
-    // database: 'coinraiser'
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
   }
 
   // MySQL is the world's most popular relational database.
