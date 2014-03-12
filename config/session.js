@@ -50,11 +50,11 @@ module.exports.session = {
   // db: 'sails',
   // collection: 'sessions',
 
-  adapter: 'mongo',
-  // host: 'ds033569.mongolab.com',
-  // port: 33569,
-  db: 'coinraiser',
-  collection: 'sessions'
+  // adapter: 'mongo',
+  // // host: 'ds033569.mongolab.com',
+  // // port: 33569,
+  // db: 'coinraiser',
+  // collection: 'sessions'
 
   //
   // Optional Values:
