@@ -33,11 +33,11 @@ module.exports.connections = {
   // Persistent adapter for DEVELOPMENT ONLY
   // (data is preserved when the server shuts down)
   disk: {
-    module: 'sails-disk'
+    adapter: 'sails-disk'
   },
 
   mongo: {
-    module: 'sails-mongo',
+    adapter: 'sails-mongo',
     schema: true,
     // TODO: Remove DB credentials from this file, change pass
     host: 'ds033569.mongolab.com',
