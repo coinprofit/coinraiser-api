@@ -39,17 +39,11 @@ module.exports.connections = {
   mongo: {
     adapter: 'sails-mongo',
     schema: true,
-    // TODO: Remove DB credentials from this file, change pass
-    host: 'ds033569.mongolab.com',
-    port: 33569,
-    user: 'raiser',
-    password: '7WUp3UZMoY41',
-    database: 'coinraiser'
-    // host: process.env.DB_HOST,
-    // port: process.env.DB_PORT,
-    // user: process.env.DB_USER,
-    // password: process.env.DB_PASS,
-    // database: process.env.DB_NAME
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
   }
 
   // MySQL is the world's most popular relational database.
