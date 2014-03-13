@@ -16,35 +16,62 @@ module.exports.policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access)
-  // '*': true
 
-  // By default, all endpoints require user authentication
-  '*': 'isAuthenticated',
-      //['isAuthenticated', 'isOwner'],
+  // ---- Endpoints allow public access by default ----
+  '*': true,
 
-  'user': {
-    // Only allow individual users to be queried, cannot get full list of all users
-    'find': 'isNotCollection',
-    // Create user endpoint has full public access
-    'create': true
-  },
-
-  // All auth endpoints have full public access
-  'auth': {
-    '*': true
-  },
+  // TODO: Uncomment this to prevent anyone from seeing entire list of users
+  // 'user': {
+  //   'find': 'isNotCollection'
+  // },
 
   'campaign': {
-   'find': true
+    'create': ['isAuthenticated','useCurrentUser'],
+    'destroy': ['isAuthenticated'], //,'isOwner'],
+    'update': ['isAuthenticated'] //,'isOwner']
   },
-
   'donation': {
-   'find': true
+    'create': ['isAuthenticated','useCurrentUser'],
+    'destroy': ['isAuthenticated'], //,'isOwner'],
+    'update': ['isAuthenticated'] //,'isOwner']
   },
-
   'iou': {
-   'find': true
+    'create': ['isAuthenticated','useCurrentUser'],
+    'destroy': ['isAuthenticated'], //,'isOwner'],
+    'update': ['isAuthenticated'] //,'isOwner']
   }
+
+  // ---- Endpoints require authentication by default ----
+
+  // // By default, all endpoints require user authentication
+  // '*': 'isAuthenticated',
+  //     //['isAuthenticated', 'isOwner'],
+
+  // 'user': {
+  //   // Only allow individual users to be queried, cannot get full list of all users
+  //   'find': 'isNotCollection',
+  //   // Create user endpoint has full public access
+  //   'create': true
+  // },
+
+  // 'user/:id/campaigns': true,
+
+  // // All auth endpoints have full public access
+  // 'auth': {
+  //   '*': true
+  // },
+
+  // 'campaign': {
+  //  'find': true
+  // },
+
+  // 'donation': {
+  //  'find': true
+  // },
+
+  // 'iou': {
+  //  'find': true
+  // }
 
 
   /*

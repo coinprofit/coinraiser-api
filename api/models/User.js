@@ -6,7 +6,6 @@
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
 
-var bcrypt = require('bcrypt');
 var _ = require('lodash');
 
 module.exports = {
@@ -23,7 +22,18 @@ module.exports = {
       required: true
     },
     email: {
+      type: 'email',
+      required: true
+    },
+    firstName: {
+      type: 'string'
+    },
+    lastName: {
+      type: 'string'
+    },
+    language: {
       type: 'string',
+      defaultsTo: 'en',
       required: true
     },
     // provider: {
@@ -34,39 +44,103 @@ module.exports = {
     // },
     coinbaseAccess: 'string',
     coinbaseRefresh: 'string',
-    // campaigns: {
-    //   collection: 'Campaign',
-    //   via: 'campaign'
-    // },
-    // donations: {
-    //   collection: 'Donation',
-    //   via: 'donation'
-    // },
-    // ious: {
-    //   collection: 'Iou',
-    //   via: 'iou'
-    // },
+    campaigns: {
+      collection: 'campaign',
+      via: 'user'
+    },
+    donations: {
+      collection: 'donation',
+      via: 'user'
+    },
+    ious: {
+      collection: 'iou',
+      via: 'user'
+    },
+
+    // Dynamic data attributes
+
+    // Computed user fullName string
+    fullName: function() {
+      return this.lastName + ' ' + this.firstName;
+    },
+
+    gravatarImage: function(size) {
+      return GravatarService.getGravatarUrl(this.email, size);
+    },
+
+    validPassword: function(password, callback) {
+      return PasswordService.validatePassword(this, password, callback);
+    },
+
+    isPermitted: function(permission) {
+
+    },
+
     toJSON: function() {
-      return _.omit(this.toObject(), 'password', 'email', 'coinbaseAccess', 'coinbaseRefresh');
+      var user = this.toObject();
+      user.avatar = this.gravatarImage();
+      return _.omit(user,
+        'password',
+        'email',
+        'coinbaseAccess',
+        'coinbaseRefresh'
+      );
     }
   },
 
-  beforeCreate: function(user, next) {
-    bcrypt.genSalt(10, function(err, salt) {
-      bcrypt.hash(user.password, salt, function(err, hash) {
-        if (err) {
-          console.log(err);
-          next(err);
-        }else{
-          user.password = hash;
-          next(null, user);
-        }
-      });
-    });
+  beforeCreate: function(values, next) {
+    PasswordService.hashPassword(values, next);
   },
 
-  isPermitted: function(permission) {
+  beforeUpdate: function(values, next) {
+    if (values.password) {
+      PasswordService.hashPassword(values, next);
+    }
+    else if (values.id) {
+      User
+        .findOne(values.id)
+        .done(function(err, user) {
+          if (err) {
+            next(err);
+          }
+          else {
+            values.password = user.password;
 
+            // Non-admin user cannot grant admin permissions to a user
+            // if (values.admin && !user.admin) {
+            //   values.admin = false;
+            // }
+
+            next();
+          }
+      });
+    } else {
+      next();
+    }
+  },
+
+  afterCreate: function(values, callback) {
+    HistoryService.write('User', values);
+    callback();
+  },
+  afterUpdate: function(values, callback) {
+    HistoryService.write('User', values);
+    callback();
+  },
+  afterDestroy: function(terms, callback) {
+    // TODO: Should we really alloy entity to be destroyed? Probably shoul do a soft delete
+    User
+      .findOne(terms)
+      .done(function(error, user) {
+        if (error) {
+          sails.log.error(error);
+        } else {
+          // TODO: Should we really remove history data when the entity is destroyed?
+          HistoryService.remove('User', user.id);
+        }
+
+        callback();
+      });
   }
 
 };

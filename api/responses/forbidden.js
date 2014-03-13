@@ -3,7 +3,7 @@
  *
  * Usage:
  * return res.forbidden('Access denied.');
- * 
+ *
  * @param {String|Object|Array} message
  *      optional message to inject into view locals or JSON response
  *
@@ -22,6 +22,9 @@ module.exports = function forbidden(message) {
   var result = {
     status: statusCode
   };
+
+  // Lookup localized message, if one exists
+  message = res.i18n(message) || message;
 
   // Optional message
   if (message) {

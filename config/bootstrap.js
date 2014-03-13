@@ -19,11 +19,11 @@
 // http://stackoverflow.com/a/18343226/220599
 module.exports.bootstrap = function (cb) {
 
-  var passport = require('passport'),
-    initialize = passport.initialize(),
-    session = passport.session(),
-    http = require('http'),
-    methods = ['login', 'logIn', 'logout', 'logOut', 'isAuthenticated', 'isUnauthenticated'];
+  var passport = require('passport');
+  var initialize = passport.initialize();
+  var session = passport.session();
+  var http = require('http');
+  var methods = ['login', 'logIn', 'logout', 'logOut', 'isAuthenticated', 'isUnauthenticated'];
 
   sails.removeAllListeners('router:request');
   sails.on('router:request', function(req, res) {

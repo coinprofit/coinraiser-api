@@ -19,7 +19,7 @@ module.exports = {
 
   me: function(req, res) {
     if (!req.user) {
-      return res.forbidden('You are not permitted to perform this action.');
+      return res.forbidden('error.noPermission');
     }
     var user = _.clone(req.user.toObject());
     delete user.password;

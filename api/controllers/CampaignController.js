@@ -16,9 +16,21 @@
  */
 
 module.exports = {
-    
-  
 
+  // find: function(req, res) {
+  //   var userId = req.param('user');
+  //   var criteria = {};
+  //   if (userId) {
+  //     criteria.userId = userId;
+  //   }
+
+  //   Campaign.find().where(criteria).done(function(error, campaigns) {
+  //     if (error) {
+  //       return res.forbidden(error);
+  //     }
+  //     return res.send(campaigns);
+  //   });
+  // },
 
   /**
    * Overrides for the settings in `config/controllers.js`
@@ -26,5 +38,5 @@ module.exports = {
    */
   _config: {}
 
-  
+
 };

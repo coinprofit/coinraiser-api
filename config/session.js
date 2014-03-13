@@ -51,10 +51,17 @@ module.exports.session = {
   // collection: 'sessions',
 
   // adapter: 'mongo',
-  // // host: 'ds033569.mongolab.com',
-  // // port: 33569,
+  // host: 'ds033569.mongolab.com',
+  // port: 33569,
   // db: 'coinraiser',
   // collection: 'sessions'
+  adapter: 'mongo',
+  collection: 'sessions',
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  db: process.env.DB_NAME,
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS
 
   //
   // Optional Values:

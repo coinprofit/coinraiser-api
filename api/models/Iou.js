@@ -10,16 +10,17 @@ module.exports = {
 
   attributes: {
     user: {
-      type: 'integer',
-      required: true
+      model: 'user'
     },
     campaign: {
-      type: 'integer',
-      required: true
+      model: 'campaign'
     },
     amount: {
       type: 'float',
       required: true
+    },
+    comment: {
+      type: 'string'
     }
   }
 

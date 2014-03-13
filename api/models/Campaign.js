@@ -10,7 +10,7 @@ module.exports = {
 
   attributes: {
 
-    title: {
+    name: {
       type: 'string',
       required: true
     },
@@ -26,9 +26,14 @@ module.exports = {
       type: 'string'
     },
     user: {
-      type: 'integer',
-      required: true
+      model: 'user'
     }
   }
+
+  // beforeCreate: function(values, next) {
+  // },
+
+  // beforeUpdate: function(values, next) {
+  // },
 
 };

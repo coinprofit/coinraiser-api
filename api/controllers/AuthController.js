@@ -78,39 +78,26 @@ module.exports = {
     passport.authenticate('local', function(err, user, info) {
       if ((err) || (!user)) {
         console.log('Passport Local err', err, user);
-        res.forbidden('You are not permitted to perform this action.');
-        // res.send({
-        //   message: 'login failed'
-        // });
-        // res.send(err);
-        // res.redirect('/login');
-        return;
+        return res.forbidden('error.noPermission');
       }
 
       req.logIn(user, function(err) {
         console.log('Passport Local logIn', err);
         if (err) {
-          res.forbidden('You are not permitted to perform this action.');
-          // res.send(err);
-
-          // res.redirect('/login');
-          // res.view();
-          return;
+          return res.forbidden('error.noPermission');
         }
-
-        // res.redirect('/');
-        res.send({
+        return res.send({
           message: 'login successful'
         });
-        return;
       });
     })(req, res);
   },
 
   logout: function(req, res) {
     req.logout();
-    res.send('logout successful');
-    // res.redirect('/');
+    res.send({
+      message:'logout successful'
+    });
   },
 
   /**
