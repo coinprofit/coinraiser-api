@@ -73,7 +73,6 @@ module.exports = {
     },
 
     isPermitted: function(permission) {
-
     },
 
     toJSON: function() {
