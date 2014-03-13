@@ -77,7 +77,9 @@ module.exports = {
 
     toJSON: function() {
       var user = this.toObject();
+
       // user.avatar = this.gravatarImage();
+
       return _.omit(user,
         'password',
         'email',
