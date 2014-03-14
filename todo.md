@@ -50,3 +50,12 @@
     - campaign - campaign funds are being claimed from
     - amount - amount being transfered
     - transactionId - bitcoin transaction id
+- Middleware
+  - Users
+    - Remove ability to get list of all users
+  - Donation
+    - Prevent user from creating donation unless they are already linked to Coinbase
+    - Prevent user from creating donation that is more than they have in their coinbase wallet
+  - Claim
+    - Prevent user from creating claim if they don't own the campaign
+
