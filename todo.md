@@ -1,0 +1,52 @@
+# API To Do List
+
+- Email integration
+  - Welcome email on signup
+    - Account activation via email link
+    - Account activation via code
+  - Send confirmation email when email address is changed
+    - Authorize email address change via email link
+    - Authorize email address change via code
+  - Send password reset email when password is forgotten
+    - Link sent to email, when clicked should display password reset form
+    - Code sent to email, can be used in-app to reset password
+- Passwords
+  - Change password
+    - Update user password needs to hash new password
+    - Update user password should require old password, but no attribute in User model for this
+    - Should API be concerned with confirm password, or handle it client-side? No confirm attribute in User model.
+  - Forgot password
+    - Need endpoint that accepts username or email address and emails password reset token
+    - Need endpoint that accepts password reset token and new password
+    - Need an HTML page to display password reset form linked to from email
+- Coinbase Integration
+  - ~~Store coinbase access and reset tokens on User model~~
+  - When a Campaign is created
+    - If user has linked to coinbase account, create wallet in user's coinbase account (wallet)
+    - If user has not linked to coinbase account, create wallet in CoinRaiser's coinbase account (walletEscrow)
+    - If connecting to linked user coinbase account fails, then fall back on using CoinRaiser account
+  - When user links to coinbase
+    - Iterate through user's campaigns
+      - Create wallet in user's coinbase account for each campaign (wallet)
+      - Transfer funds from coinraiser escrow wallet (walletEscrow) for campaign to user's coinbase wallet (wallet) for the campaign
+    - Iterate through user's ious
+      - TBD
+      - For each IOU, prompt user to complete transaction
+      - Completing transaction will convert an IOU into a Donation
+      - New Donation is created and existing IOU is marked as 'paid' or removed.
+  - When a Donation is created
+    - Use Coinbase API to send BTC from donating user to campaign wallet
+  - When a Claim is created
+    - Use Coinbase API to send BTC from campaign escrow wallet to campaign owner's wallet
+- Model Updates
+  - Campaign
+    - wallet - wallet address within the User's coinbase account
+    - walletEscrow - wallet address within CoinRaiser's coinbase account
+  - IOU
+    - donation - links an IOU to a Donation (existance of donation value means IOU was paid)
+    - paidAt - date IOU was converted to donation
+  - Claim - new model for when a user claims money from a campaign (should this be called *Transaction*?)
+    - user - user making the claim (must be owner of the campaign) who is receiving funds
+    - campaign - campaign funds are being claimed from
+    - amount - amount being transfered
+    - transactionId - bitcoin transaction id
