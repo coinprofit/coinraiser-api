@@ -22,8 +22,30 @@ module.exports = {
       return res.forbidden('error.noPermission');
     }
     var user = _.clone(req.user.toObject());
-    delete user.password;
+    user.avatar = req.user.gravatarImage();
+
+    user = _.omit(user,
+      'password',
+      'salt',
+      'locked',
+      'passwordFailures',
+      'lastPasswordFailure',
+      'resetToken'
+    );
     res.json(user);
+  },
+
+  // Check if username is available
+  check: function(req, res) {
+    UserService.checkUsername(req, res);
+  },
+
+  activate: function(req, res) {
+    // TODO: Implement account activation
+  },
+
+  resetPassword: function(req, res) {
+    // TODO: Implement passsword reset
   },
 
   /**

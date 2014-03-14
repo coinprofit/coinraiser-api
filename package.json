@@ -28,7 +28,10 @@
     "lodash": "~2.4.1",
     "sails-mongo": "~0.10.0-rc1",
     "gravatar": "~1.0.6",
-    "moment-timezone": "0.0.3"
+    "moment-timezone": "0.0.3",
+    "jsonwebtoken": "~0.1.0",
+    "socketio-jwt": "~2.0.1",
+    "passport-http-bearer": "~1.0.1"
   },
   "scripts": {
     "start": "node app.js",

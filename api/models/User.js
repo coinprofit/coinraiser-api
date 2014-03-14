@@ -6,8 +6,6 @@
  * @docs		:: http://sailsjs.org/#!documentation/models
  */
 
-var _ = require('lodash');
-
 module.exports = {
 
   attributes: {
@@ -36,14 +34,51 @@ module.exports = {
       defaultsTo: 'en',
       required: true
     },
-    // provider: {
-    //   type: 'string'
-    // },
-    // provider_id:{
-    //   type: 'string'
-    // },
-    coinbaseAccess: 'string',
-    coinbaseRefresh: 'string',
+
+    // --- Account security ---
+
+    salt: {
+      type: 'string'
+    },
+    locked: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+    passwordFailures: {
+      type: 'integer',
+      defaultsTo: 0
+    },
+    lastPasswordFailure: {
+      type: 'datetime'
+    },
+    resetToken: {
+      type: 'string'
+    },
+
+    // --- User Activation ---
+
+    // Token for email activation
+    // See this project for integrating email, password reset, etc:
+    // https://github.com/jdcauley/sailsjs-v010-boilerplate
+    activationToken: {
+      type: 'string'
+    },
+    activated: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
+    // --- Coinbase Tokens ---
+
+    coinbaseAccess: {
+      type: 'string'
+    },
+    coinbaseRefresh: {
+      type: 'string'
+    },
+
+    // --- Collections --
+
     campaigns: {
       collection: 'campaign',
       via: 'user'
@@ -68,7 +103,7 @@ module.exports = {
       return GravatarService.getGravatarUrl(this.email, size);
     },
 
-    validPassword: function(password, callback) {
+    validatePassword: function(password, callback) {
       return PasswordService.validatePassword(this, password, callback);
     },
 
@@ -78,19 +113,40 @@ module.exports = {
     toJSON: function() {
       var user = this.toObject();
 
-      // user.avatar = this.gravatarImage();
+      // console.log('toJSON',user);
+
+      user.avatar = this.gravatarImage() || user.avatar;
 
       return _.omit(user,
         'password',
         'email',
         'coinbaseAccess',
-        'coinbaseRefresh'
+        'coinbaseRefresh',
+        'salt',
+        'locked',
+        'passwordFailures',
+        'lastPasswordFailure',
+        'resetToken'
       );
     }
   },
 
   beforeCreate: function(values, next) {
     PasswordService.hashPassword(values, next);
+
+    // TOOD: Create activation token.
+    // Example from https://github.com/jdcauley/sailsjs-v010-boilerplate/blob/master/api/models/User.js
+
+    // crypto.generate({saltComplexity: 10}, user.password, function(err, hash){
+    //   if(err){
+    //     return cb(err);
+    //   }else{
+    //     user.password = hash;
+    //     user.activated = false; //make sure nobody is creating a user with activate set to true, this is probably just for paranoia sake
+    //     user.activationToken = crypto.token(new Date().getTime()+user.email);
+    //     return cb(null, user);
+    //   }
+    // });
   },
 
   beforeUpdate: function(values, next) {
@@ -123,10 +179,14 @@ module.exports = {
   afterCreate: function(values, callback) {
     HistoryService.write('User', values);
     callback();
+
+    // TODO: Send activation email
   },
   afterUpdate: function(values, callback) {
     HistoryService.write('User', values);
     callback();
+
+    // TOOD: If email changed, send activation email
   },
   afterDestroy: function(terms, callback) {
     // TODO: Should we really alloy entity to be destroyed? Probably shoul do a soft delete

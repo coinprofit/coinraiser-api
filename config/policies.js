@@ -25,6 +25,11 @@ module.exports.policies = {
   //   'find': 'isNotCollection'
   // },
 
+  'user': {
+    'me': ['isAuthenticated'], //hasValidToken']
+    // 'find': 'isNotCollection'
+  },
+
   'campaign': {
     'create': ['isAuthenticated','useCurrentUser'],
     'destroy': ['isAuthenticated'], //,'isOwner'],

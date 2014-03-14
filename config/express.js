@@ -1,4 +1,31 @@
 var passport = require('passport');
+var _ = require('lodash');
+
+// This middleware is called on EVERY request. It must not fail if user is not authenticated.
+var decodeToken = function(req, res, next) {
+  // Skip if there is no Authorization header
+  if (!req.headers['authorization']) {
+    return next();
+  }
+  // Attempt to authenticate user based on Authorization header
+  passport.authenticate('bearer', {session: false}, function(err, user, info) {
+    // This callback function is executed regardless if the user successfully authenticated or not
+    // or if a valid authorization token was found or not
+
+    if (err) {
+      // If an actual error occurs, then we break out. This does not happen if an invalid token is
+      // found or a user couldn't be loaded, only if some sort of internal error has occurred.
+      return req.forbidden('An error has occurred');
+    }
+
+    // Store user in the request
+    // TODO: This logic might need to be validated. What if req.user already exists?
+    req.user = req.user || user;
+
+    // Continue on, regardless if authenticate was successful or not
+    next();
+  })(req,res);
+};
 
 /**
  * Configure advanced options for the Express server inside of Sails.
@@ -19,8 +46,11 @@ module.exports.express = {
 
 
   customMiddleware: function (app) {
+    // Initialize passport authentication
     app.use(passport.initialize());
-    app.use(passport.session());
+    // app.use(passport.session());
+    // Decode the Authorization: Bearer header on every request
+    app.use(decodeToken);
   }
 
 
@@ -80,7 +110,6 @@ module.exports.express = {
   //
   // Example override:
   // cookieParser: (function customMethodOverride (req, res, next) {})(),
-
 
 
   // HTTP method override middleware

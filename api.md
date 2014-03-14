@@ -1,0 +1,320 @@
+# CoinRaiser API
+
+## Authentication
+
+### POST /authenticate
+
+Authenticates a user, returning user model and authentication token.
+
+#### Request Headers
+
+```
+Content-Type: application/json
+```
+
+#### Request Body
+
+```
+{
+  "username": "<your-username-here>",
+  "password": "<your-password-here>"
+}
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/authenticate' -X POST -d '{"username":"<your-username-here>","password":"<your-password-here>"}' -H 'Content-Type: application/json' -v
+```
+
+## Current User
+
+### GET /me
+
+Retrieves user model for the current user. Must be authenticated with a valid token passed in the Authorization header.
+
+#### Request Headers
+
+```
+Authorization: Bearer <your-token-here>
+```
+
+#### Request Body
+
+```
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/me' -H 'Authorization: Bearer <your-token-here>' -v
+```
+
+## Users
+
+### POST /users
+
+Creates a new user, returning user model and authentication token.
+
+NOTE: Currently doesn't return token. For now, make another request to /authenticate with the username and password to get the token. This will be resolved soon.
+
+#### Request Headers
+
+```
+Content-Type: application/json
+```
+
+#### Request Body
+
+```
+{
+  "username": "<your-username-here>",
+  "password": "<your-password-here>",
+  "email": "<your-email-here>"
+}
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/users' -X POST -d '{"username":"<your-username-here>","password":"<your-password-here>","email":"<your-email-here>"}' -H 'Content-Type: application/json' -v
+```
+
+### GET /users
+
+TEMPORARY! Retrieves all user models. This endpoint will be disabled before going to production. Eventually, it may be available to an admin user. Available to unauthenticated users.
+
+#### Request Headers
+
+```
+```
+
+#### Request Body
+
+```
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/users' -v
+```
+
+### GET /users/:id
+
+Retrieves the user model with the specified `id`. Available to unauthenticated users.
+
+Note that this endpoint filters out private user information such as email address.
+
+#### Request Headers
+
+```
+```
+
+#### Request Body
+
+```
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/users/<user-id>' -v
+```
+
+## Campaigns
+
+### POST /campaigns
+
+Creates a new campaign, returning campaign model.
+
+#### Request Headers
+
+```
+Content-Type: application/json
+```
+
+#### Request Body
+
+```
+{
+  "name": "<campaign-name>",
+  "description": "<campaign-description>",
+  "user": "<your-user-id>",
+  "goal": 1.0
+}
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/campaigns' -X POST -d '{"name":"<campaign-name>","description":"<campaign-description>","user":"<your-user-id>","goal":1.0}' -H 'Content-Type: application/json' -H 'Authorization: Bearer <your-token-here>' -v
+```
+
+### GET /campaigns
+
+Retrieves all campaigns. Available to unauthenticated users.
+
+#### Request Headers
+
+```
+```
+
+#### Request Body
+
+```
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/campaigns' -v
+```
+
+### GET /campaigns/:id
+
+Retrieves the campaign model with the specified `id`. Available to unauthenticated users.
+
+#### Request Headers
+
+```
+```
+
+#### Request Body
+
+```
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/campaigns/<campaign-id>' -v
+```
+
+
+
+
+## Donations
+
+### POST /donations
+
+Creates a new donation, returning donation model.
+
+#### Request Headers
+
+```
+Content-Type: application/json
+```
+
+#### Request Body
+
+```
+{
+  "campaign": "<campaign-id>",
+  "user": "<your-user-id>",
+  "amount": 1.0,
+  "comment" "<comment-about-donation>"
+}
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/donations' -X POST -d '{"campaign":"<campaign-id>","comment":"<comment-about-donation>","user":"<your-user-id>","amount":0.0023}' -H 'Content-Type: application/json' -H 'Authorization: Bearer <your-token-here>' -v
+```
+
+### GET /donations
+
+Retrieves all donations. Available to unauthenticated users.
+
+#### Request Headers
+
+```
+```
+
+#### Request Body
+
+```
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/donations' -v
+```
+
+
+### GET /donations/:id
+
+Retrieves the donations model with the specified `id`. Available to unauthenticated users.
+
+#### Request Headers
+
+```
+```
+
+#### Request Body
+
+```
+```
+
+#### Response
+
+```
+```
+
+#### Curl
+
+```
+curl 'http://coinraiser.heroku.com/donations/<donation-id>' -v
+```

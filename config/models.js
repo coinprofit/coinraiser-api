@@ -14,5 +14,6 @@ module.exports.models = {
   // (defaults to localDiskDb)
   // connection: 'localDiskDb'
   connection: 'mongo'
+  // connection: 'disk'
 
 };

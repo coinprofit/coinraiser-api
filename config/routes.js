@@ -28,13 +28,23 @@ module.exports.routes = {
   '/': {
     view: 'homepage'
   },
-  'get /login': {
+  // 'get /login': {
+  //   controller: 'auth',
+  //   action: 'login'
+  // },
+  // 'post /login': {
+  //   controller: 'auth',
+  //   action: 'processLocal'
+  // },
+  'get /authenticate': {
     controller: 'auth',
-    action: 'login'
+    // action: 'token'
+    action: 'authenticate'
   },
-  'post /login': {
+  'post /authenticate': {
     controller: 'auth',
     action: 'process'
+    // action: 'processToken'
   },
   '/logout': {
     controller: 'auth',
