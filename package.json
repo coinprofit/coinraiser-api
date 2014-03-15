@@ -32,7 +32,8 @@
     "jsonwebtoken": "~0.1.0",
     "socketio-jwt": "~2.0.1",
     "passport-http-bearer": "~1.0.1",
-    "coinapi": "Orbs/coinapi"
+    "coinapi": "Orbs/coinapi",
+    "request": "~2.34.0"
   },
   "scripts": {
     "start": "node app.js",

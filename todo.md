@@ -4,6 +4,10 @@
   - Using an invalid auth token seems to break things
 - Coinbase Integration
   - ~~Store coinbase access and reset tokens on User model~~
+  - ~~Integrate coinapi module~~
+  - ~~Add support for access_token~~
+  - ~~Add support for using refresh_token to get new access_token~~
+    - ~~If a request fails to auth, then refresh tokens~~
   - When a Campaign is created
     - If user has linked to coinbase account, create wallet in user's coinbase account (wallet)
     - If user has not linked to coinbase account, create wallet in CoinRaiser's coinbase account (walletEscrow)

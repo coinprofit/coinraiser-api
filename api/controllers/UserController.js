@@ -38,7 +38,7 @@ module.exports = {
     };
 
     if (user.coinbaseAccess) {
-      return CoinbaseService.getAccount(user.coinbaseAccess, function(err, account) {
+      return CoinbaseService.getAccount(user, function(err, account) {
         if (err) {
           res.badRequest({
             message: err
@@ -54,22 +54,24 @@ module.exports = {
 
   balance: function(req, res) {
     var user = req.user;
-    CoinbaseService.getBalance(user.coinbaseAccess, function(err, balance) {
-      if (err) {
-        res.badRequest({
-          message: err
+    if (user.coinbaseAccess) {
+      CoinbaseService.getBalance(user, function(err, balance) {
+        if (err) {
+          res.badRequest({
+            message: err
+          });
+        }
+        res.json({
+          user: user.toJSON(),
+          balance: balance
         });
-      }
-      res.json({
-        user: user.toJSON(),
-        balance: balance
       });
-    });
+    }
   },
 
   // account: function(req, res) {
   //   var user = req.user;
-  //   CoinbaseService.getAccount(user.coinbaseAccess, function(err, account) {
+  //   CoinbaseService.getAccount(user, function(err, account) {
   //     if (err) {
   //       res.badRequest({
   //         message: err
@@ -84,7 +86,7 @@ module.exports = {
 
   // createAddress: function(req, res) {
   //   var user = req.user;
-  //   CoinbaseService.createReceiveAddress(user.coinbaseAccess, function(err, address) {
+  //   CoinbaseService.createReceiveAddress(user, function(err, address) {
   //     if (err) {
   //       res.badRequest({
   //         message: err
