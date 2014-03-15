@@ -21,15 +21,19 @@ Content-Type: application/json
 }
 ```
 
-#### Response
+#### Response Body
 
 ```
+{
+  user: {},
+  token: ''
+}
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/authenticate' -X POST -d '{"username":"<your-username-here>","password":"<your-password-here>"}' -H 'Content-Type: application/json' -v
+curl 'http://coinraiser.herokuapp.com/authenticate' -X POST -d '{"username":"<your-username-here>","password":"<your-password-here>"}' -H 'Content-Type: application/json' -v
 ```
 
 ## Current User
@@ -49,15 +53,17 @@ Authorization: Bearer <your-token-here>
 ```
 ```
 
-#### Response
+#### Response Body
 
 ```
+{
+}
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/me' -H 'Authorization: Bearer <your-token-here>' -v
+curl 'http://coinraiser.herokuapp.com/me' -H 'Authorization: Bearer <your-token-here>' -v
 ```
 
 ## Users
@@ -84,15 +90,17 @@ Content-Type: application/json
 }
 ```
 
-#### Response
+#### Response Body
 
 ```
+{
+}
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/users' -X POST -d '{"username":"<your-username-here>","password":"<your-password-here>","email":"<your-email-here>"}' -H 'Content-Type: application/json' -v
+curl 'http://coinraiser.herokuapp.com/users' -X POST -d '{"username":"<your-username-here>","password":"<your-password-here>","email":"<your-email-here>"}' -H 'Content-Type: application/json' -v
 ```
 
 ### GET /users
@@ -109,15 +117,21 @@ TEMPORARY! Retrieves all user models. This endpoint will be disabled before goin
 ```
 ```
 
-#### Response
+#### Response Body
 
 ```
+[
+  {
+  },
+  {
+  }
+]
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/users' -v
+curl 'http://coinraiser.herokuapp.com/users' -v
 ```
 
 ### GET /users/:id
@@ -136,15 +150,17 @@ Note that this endpoint filters out private user information such as email addre
 ```
 ```
 
-#### Response
+#### Response Body
 
 ```
+{
+}
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/users/<user-id>' -v
+curl 'http://coinraiser.herokuapp.com/users/<user-id>' -v
 ```
 
 ## Campaigns
@@ -170,20 +186,50 @@ Content-Type: application/json
 }
 ```
 
-#### Response
+#### Response Body
 
 ```
+{
+}
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/campaigns' -X POST -d '{"name":"<campaign-name>","description":"<campaign-description>","user":"<your-user-id>","goal":1.0}' -H 'Content-Type: application/json' -H 'Authorization: Bearer <your-token-here>' -v
+curl 'http://coinraiser.herokuapp.com/campaigns' -X POST -d '{"name":"<campaign-name>","description":"<campaign-description>","user":"<your-user-id>","goal":1.0}' -H 'Content-Type: application/json' -H 'Authorization: Bearer <your-token-here>' -v
 ```
 
 ### GET /campaigns
 
 Retrieves all campaigns. Available to unauthenticated users.
+
+
+#### Query String
+
+Supports filtering by using query parameters. Can query for exact property values by specifying the property name as a query param and the value to find as the value. For instance:
+
+/campaigns?name=foo&goal=1.0
+
+More complex queries are supported by passing a criteria JSON object as the `where` property of the query string. The object must be url encoded. Here's an example criteria object:
+
+```
+{
+  name: {
+    contains: 'foo'
+  },
+  goal: {
+    '>=': 1.0
+  }
+}
+```
+
+Results can be sorted, and results can be limited and pages of results skipped:
+
+```
+curl 'http://coinraiser.herokuapp.com/campaigns?sort=goal%20DESC&limit=10&skip=1' -v
+
+curl 'http://coinraiser.herokuapp.com/campaigns?sort=name%20ASC&limit=5&skip=0' -v
+```
 
 #### Request Headers
 
@@ -195,15 +241,23 @@ Retrieves all campaigns. Available to unauthenticated users.
 ```
 ```
 
-#### Response
+#### Response Body
 
 ```
+[
+  {
+  },
+  {
+  }
+]
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/campaigns' -v
+curl 'http://coinraiser.herokuapp.com/campaigns' -v
+
+curl 'http://coinraiser.herokuapp.com/campaigns?where=%7B%22name%22%3A%7B%22contains%22%3A%22foo%22%7D%7D' -v
 ```
 
 ### GET /campaigns/:id
@@ -220,19 +274,18 @@ Retrieves the campaign model with the specified `id`. Available to unauthenticat
 ```
 ```
 
-#### Response
+#### Response Body
 
 ```
+{
+{
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/campaigns/<campaign-id>' -v
+curl 'http://coinraiser.herokuapp.com/campaigns/<campaign-id>' -v
 ```
-
-
-
 
 ## Donations
 
@@ -257,15 +310,17 @@ Content-Type: application/json
 }
 ```
 
-#### Response
+#### Response Body
 
 ```
+{
+}
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/donations' -X POST -d '{"campaign":"<campaign-id>","comment":"<comment-about-donation>","user":"<your-user-id>","amount":0.0023}' -H 'Content-Type: application/json' -H 'Authorization: Bearer <your-token-here>' -v
+curl 'http://coinraiser.herokuapp.com/donations' -X POST -d '{"campaign":"<campaign-id>","comment":"<comment-about-donation>","user":"<your-user-id>","amount":0.0023}' -H 'Content-Type: application/json' -H 'Authorization: Bearer <your-token-here>' -v
 ```
 
 ### GET /donations
@@ -282,17 +337,22 @@ Retrieves all donations. Available to unauthenticated users.
 ```
 ```
 
-#### Response
+#### Response Body
 
 ```
+[
+  {
+  },
+  {
+  }
+]
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/donations' -v
+curl 'http://coinraiser.herokuapp.com/donations' -v
 ```
-
 
 ### GET /donations/:id
 
@@ -308,13 +368,15 @@ Retrieves the donations model with the specified `id`. Available to unauthentica
 ```
 ```
 
-#### Response
+#### Response Body
 
 ```
+{
+}
 ```
 
 #### Curl
 
 ```
-curl 'http://coinraiser.heroku.com/donations/<donation-id>' -v
+curl 'http://coinraiser.herokuapp.com/donations/<donation-id>' -v
 ```
