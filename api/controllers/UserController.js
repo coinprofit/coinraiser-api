@@ -18,22 +18,84 @@
 module.exports = {
 
   me: function(req, res) {
-    if (!req.user) {
-      return res.forbidden('error.noPermission');
-    }
-    var user = _.clone(req.user.toObject());
-    user.avatar = req.user.gravatarImage();
+    // if (!req.user) {
+    //   return res.forbidden('error.noPermission');
+    // }
+    var user = req.user;
 
-    user = _.omit(user,
-      'password',
-      'salt',
-      'locked',
-      'passwordFailures',
-      'lastPasswordFailure',
-      'resetToken'
-    );
-    res.json(user);
+    var obj = {
+      user: _.extend(_.omit(user.toObject(),
+        'password',
+        'salt',
+        'locked',
+        'passwordFailures',
+        'lastPasswordFailure',
+        'resetToken'
+      ), {
+        avatar: user.gravatarImage()
+      }),
+      coinbase: {}
+    };
+
+    if (user.coinbaseAccess) {
+      return CoinbaseService.getAccount(user.coinbaseAccess, function(err, account) {
+        if (err) {
+          res.badRequest({
+            message: err
+          });
+        }
+        obj.coinbase = account;
+        res.json(obj);
+      });
+    }
+
+    res.json(obj);
   },
+
+  balance: function(req, res) {
+    var user = req.user;
+    CoinbaseService.getBalance(user.coinbaseAccess, function(err, balance) {
+      if (err) {
+        res.badRequest({
+          message: err
+        });
+      }
+      res.json({
+        user: user.toJSON(),
+        balance: balance
+      });
+    });
+  },
+
+  // account: function(req, res) {
+  //   var user = req.user;
+  //   CoinbaseService.getAccount(user.coinbaseAccess, function(err, account) {
+  //     if (err) {
+  //       res.badRequest({
+  //         message: err
+  //       });
+  //     }
+  //     res.json({
+  //       user: user.toJSON(),
+  //       account: account
+  //     });
+  //   });
+  // },
+
+  // createAddress: function(req, res) {
+  //   var user = req.user;
+  //   CoinbaseService.createReceiveAddress(user.coinbaseAccess, function(err, address) {
+  //     if (err) {
+  //       res.badRequest({
+  //         message: err
+  //       });
+  //     }
+  //     res.json({
+  //       user: user.toJSON(),
+  //       address: address
+  //     });
+  //   });
+  // },
 
   // Check if username is available
   check: function(req, res) {

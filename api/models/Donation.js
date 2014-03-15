@@ -10,10 +10,12 @@ module.exports = {
 
   attributes: {
     user: {
-      model: 'user'
+      model: 'user',
+      required: true
     },
     campaign: {
-      model: 'campaign'
+      model: 'campaign',
+      required: true
     },
     amount: {
       type: 'float',

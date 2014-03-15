@@ -31,7 +31,8 @@
     "moment-timezone": "0.0.3",
     "jsonwebtoken": "~0.1.0",
     "socketio-jwt": "~2.0.1",
-    "passport-http-bearer": "~1.0.1"
+    "passport-http-bearer": "~1.0.1",
+    "coinapi": "Orbs/coinapi"
   },
   "scripts": {
     "start": "node app.js",

@@ -39,6 +39,10 @@ module.exports.bootstrap = function (cb) {
   //     });
   //   });
   // });
+
+  // Initialize Coinbase CoinAPI Provider
+  CoinbaseService.initialize();
+
   cb();
 };
 

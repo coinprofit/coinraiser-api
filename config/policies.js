@@ -28,6 +28,7 @@ module.exports.policies = {
   'user': {
     'me': ['isAuthenticated'], //hasValidToken']
     // 'find': 'isNotCollection'
+    'balance': ['isAuthenticated','isLinked']
   },
 
   'campaign': {

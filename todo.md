@@ -1,24 +1,7 @@
 # API To Do List
 
-- Email integration
-  - Welcome email on signup
-    - Account activation via email link
-    - Account activation via code
-  - Send confirmation email when email address is changed
-    - Authorize email address change via email link
-    - Authorize email address change via code
-  - Send password reset email when password is forgotten
-    - Link sent to email, when clicked should display password reset form
-    - Code sent to email, can be used in-app to reset password
-- Passwords
-  - Change password
-    - Update user password needs to hash new password
-    - Update user password should require old password, but no attribute in User model for this
-    - Should API be concerned with confirm password, or handle it client-side? No confirm attribute in User model.
-  - Forgot password
-    - Need endpoint that accepts username or email address and emails password reset token
-    - Need endpoint that accepts password reset token and new password
-    - Need an HTML page to display password reset form linked to from email
+- Fix edge cases
+  - Using an invalid auth token seems to break things
 - Coinbase Integration
   - ~~Store coinbase access and reset tokens on User model~~
   - When a Campaign is created
@@ -39,23 +22,49 @@
   - When a Claim is created
     - Use Coinbase API to send BTC from campaign escrow wallet to campaign owner's wallet
 - Model Updates
+  - User
+    - avatar - upload image for user, or use Gravatar as fallback
   - Campaign
     - wallet - wallet address within the User's coinbase account
     - walletEscrow - wallet address within CoinRaiser's coinbase account
-  - IOU
-    - donation - links an IOU to a Donation (existance of donation value means IOU was paid)
-    - paidAt - date IOU was converted to donation
+    - images - array of images for this campaign
+  - Donation
+    - paid - boolean indicator for whether donation was paid or not. if false, donation acts as an IOU.
+    - paidAt - date donation was actually paid
   - Claim - new model for when a user claims money from a campaign (should this be called *Transaction*?)
     - user - user making the claim (must be owner of the campaign) who is receiving funds
     - campaign - campaign funds are being claimed from
     - amount - amount being transfered
     - transactionId - bitcoin transaction id
+  - Image
+    - owner
+    - type
+    - uri
 - Middleware
   - Users
     - Remove ability to get list of all users
   - Donation
-    - Prevent user from creating donation unless they are already linked to Coinbase
-    - Prevent user from creating donation that is more than they have in their coinbase wallet
+    - Only allow donation to be paid if user is linked to Coinbase
+    - Only allow donation to be paid if it is less than they have in their coinbase wallet
   - Claim
     - Prevent user from creating claim if they don't own the campaign
+- Email integration
+  - Welcome email on signup
+    - Account activation via email link
+    - Account activation via code
+  - Send confirmation email when email address is changed
+    - Authorize email address change via email link
+    - Authorize email address change via code
+  - Send password reset email when password is forgotten
+    - Link sent to email, when clicked should display password reset form
+    - Code sent to email, can be used in-app to reset password
+- Passwords
+  - Change password
+    - Update user password needs to hash new password
+    - Update user password should require old password, but no attribute in User model for this
+    - Should API be concerned with confirm password, or handle it client-side? No confirm attribute in User model.
+  - Forgot password
+    - Need endpoint that accepts username or email address and emails password reset token
+    - Need endpoint that accepts password reset token and new password
+    - Need an HTML page to display password reset form linked to from email
 

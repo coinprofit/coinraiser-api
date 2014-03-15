@@ -210,6 +210,8 @@ Supports filtering by using query parameters. Can query for exact property value
 
 /campaigns?name=foo&goal=1.0
 
+Criteria modifiers are [documented here](https://github.com/balderdashy/waterline-docs/blob/master/query-language.md)
+
 More complex queries are supported by passing a criteria JSON object as the `where` property of the query string. The object must be url encoded. Here's an example criteria object:
 
 ```

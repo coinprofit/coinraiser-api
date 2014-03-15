@@ -21,6 +21,7 @@ var socketjwt = require('socketio-jwt');
 //
 //  Token auth with Passport:
 //
+//  https://www.npmjs.org/package/passport-coinbase
 //  https://github.com/roblevintennis/passport-api-tokens
 //  https://github.com/jaredhanson/passport-http-bearer
 //
@@ -123,9 +124,9 @@ module.exports = {
 
   // This is called with every request that includes an authorization token
   bearerStrategyHandler: function(token, done) {
-    console.log('bearer token',token);
+    // console.log('bearer token',token);
     AuthService.verifyToken(token, function(err, payload) {
-      console.log('bearer payload',payload);
+      // console.log('bearer payload',payload, err);
       if (err) {
         return done(err);
       }

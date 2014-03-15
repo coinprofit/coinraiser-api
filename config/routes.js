@@ -53,6 +53,32 @@ module.exports.routes = {
   'get /me': {
     controller: 'user',
     action: 'me'
+  },
+  'get /me/balance': {
+    controller: 'user',
+    action: 'balance'
+  },
+  // 'get /me/account': {
+  //   controller: 'user',
+  //   action: 'account'
+  // },
+  // 'post /me/address': {
+  //   controller: 'user',
+  //   action: 'createAddress'
+  // },
+
+  // Add support for POST updates in addition to PUT updates
+  'post /users/:id': {
+    controller: 'user',
+    action: 'update'
+  },
+  'post /campaigns/:id': {
+    controller: 'campaign',
+    action: 'update'
+  },
+  'post /donations/:id': {
+    controller: 'donation',
+    action: 'update'
   }
 
   // Custom routes here...
