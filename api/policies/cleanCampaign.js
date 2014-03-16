@@ -6,6 +6,7 @@ module.exports = function(req, res, next) {
     delete req.body.raised;
     delete req.body.pledged;
     delete req.body.address;
+    delete req.body.donations;
   }
   return next();
 };

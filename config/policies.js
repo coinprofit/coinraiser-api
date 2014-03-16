@@ -40,7 +40,7 @@ module.exports.policies = {
   },
   'donation': {
     'create': ['isAuthenticated','useCurrentUser','cleanDonation'],
-    'update': ['isAuthenticated','removeUser','cleanDonation','cleanUpdateDonation'], //,'isOwner']
+    'update': false, // ['isAuthenticated','removeUser','cleanDonation','cleanUpdateDonation'], //,'isOwner']
     'destroy': false
   },
 
