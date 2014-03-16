@@ -23,12 +23,12 @@ module.exports = {
       required: true
     },
     raised: {
-      type: 'float',
-      defaultsTo: 0
+      type: 'string',
+      defaultsTo: '0'
     },
     pledged: {
-      type: 'float',
-      defaultsTo: 0
+      type: 'string',
+      defaultsTo: '0'
     },
     logo: {
       type: 'string'
@@ -42,7 +42,11 @@ module.exports = {
     },
     addressEscrow: {
       type: 'string'
-    }
+    },
+    donations: {
+      collection: 'donation',
+      via: 'campaign'
+    },
   }
 
   // beforeCreate: function(values, next) {

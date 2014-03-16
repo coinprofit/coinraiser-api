@@ -18,11 +18,19 @@ module.exports = {
       required: true
     },
     amount: {
-      type: 'float',
+      type: 'string',
       required: true
     },
     comment: {
       type: 'string'
+    },
+    transaction: {
+      type: 'json'
+    },
+
+    // This donation is just a pledge if no transaction data has been stored with it
+    isPledge: function() {
+      return this.transaction ? false : true;
     }
   }
 
