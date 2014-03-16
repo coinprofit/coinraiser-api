@@ -73,6 +73,29 @@ module.exports = {
     CoinbaseService.tokenRefresher(user, makeRequest, done);
   },
 
+  sendMoney: function(user, props, done) {
+    if (!inst) {
+      return done({
+        message: 'Coinbase provider not initialized'
+      });
+    }
+
+    if (!user.isLinked()) {
+      return done({
+        message: 'Cannot send funds from an unlinked account'
+      })
+    }
+
+    function makeRequest(next) {
+      var params = props || {};
+      params.access_token = user.coinbaseAccess;
+
+      inst.api.transactions.send(next, params);
+    }
+
+    CoinbaseService.tokenRefresher(user, makeRequest, done);
+  },
+
   tokenRefresher: function(user, action, done) {
 
     var retry = 2;
