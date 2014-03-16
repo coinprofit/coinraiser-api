@@ -33,6 +33,15 @@ module.exports = {
     logo: {
       type: 'string'
     },
+    imageUrl1: {
+      type: 'string'
+    },
+    imageUrl2: {
+      type: 'string'
+    },
+    imageUrl3: {
+      type: 'string'
+    },
     user: {
       model: 'user',
       required: true
