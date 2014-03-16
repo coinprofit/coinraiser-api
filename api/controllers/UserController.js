@@ -37,7 +37,7 @@ module.exports = {
       coinbase: {}
     };
 
-    if (user.coinbaseAccess) {
+    if (user.isLinked()) {
       return CoinbaseService.getAccount(user, function(err, account) {
         if (err) {
           res.badRequest({
@@ -52,22 +52,22 @@ module.exports = {
     res.json(obj);
   },
 
-  balance: function(req, res) {
-    var user = req.user;
-    if (user.coinbaseAccess) {
-      CoinbaseService.getBalance(user, function(err, balance) {
-        if (err) {
-          res.badRequest({
-            message: err
-          });
-        }
-        res.json({
-          user: user.toJSON(),
-          balance: balance
-        });
-      });
-    }
-  },
+  // balance: function(req, res) {
+  //   var user = req.user;
+  //   if (user.isLinked()) {
+  //     CoinbaseService.getBalance(user, function(err, balance) {
+  //       if (err) {
+  //         res.badRequest({
+  //           message: err
+  //         });
+  //       }
+  //       res.json({
+  //         user: user.toJSON(),
+  //         balance: balance
+  //       });
+  //     });
+  //   }
+  // },
 
   // account: function(req, res) {
   //   var user = req.user;
@@ -100,17 +100,17 @@ module.exports = {
   // },
 
   // Check if username is available
-  check: function(req, res) {
-    UserService.checkUsername(req, res);
-  },
+  // check: function(req, res) {
+  //   UserService.checkUsername(req, res);
+  // },
 
-  activate: function(req, res) {
-    // TODO: Implement account activation
-  },
+  // activate: function(req, res) {
+  //   // TODO: Implement account activation
+  // },
 
-  resetPassword: function(req, res) {
-    // TODO: Implement passsword reset
-  },
+  // resetPassword: function(req, res) {
+  //   // TODO: Implement passsword reset
+  // },
 
   /**
    * Overrides for the settings in `config/controllers.js`

@@ -1,0 +1,7 @@
+Place any blueprint overrrides into this folder.
+
+More information available here:
+http://stackoverflow.com/questions/22273789/crud-blueprint-overriding-in-sailsjs
+
+Default blueprints are here:
+https://github.com/balderdashy/sails/tree/master/lib/hooks/blueprints/actions

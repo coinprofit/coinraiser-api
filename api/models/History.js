@@ -13,7 +13,7 @@
 module.exports = {
 
   attributes: {
-    // Reference to object, eg. User, Campaign, Donation, Iou, etc.
+    // Reference to object, eg. User, Campaign, Donation, etc.
     objectName: {
       type:       'string',
       required:   true

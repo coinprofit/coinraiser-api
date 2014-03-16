@@ -54,10 +54,10 @@ module.exports.routes = {
     controller: 'user',
     action: 'me'
   },
-  'get /me/balance': {
-    controller: 'user',
-    action: 'balance'
-  },
+  // 'get /me/balance': {
+  //   controller: 'user',
+  //   action: 'balance'
+  // },
   // 'get /me/account': {
   //   controller: 'user',
   //   action: 'account'
@@ -79,7 +79,12 @@ module.exports.routes = {
   'post /donations/:id': {
     controller: 'donation',
     action: 'update'
-  }
+  },
+
+  // 'post /campaigns': {
+  //   controller: 'campaign',
+  //   action: 'createWithAddress'
+  // }
 
   // Custom routes here...
 

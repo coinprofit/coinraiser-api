@@ -87,10 +87,6 @@ module.exports = {
       collection: 'donation',
       via: 'user'
     },
-    ious: {
-      collection: 'iou',
-      via: 'user'
-    },
 
     // Dynamic data attributes
 
@@ -108,6 +104,10 @@ module.exports = {
     },
 
     isPermitted: function(permission) {
+    },
+
+    isLinked: function() {
+      return this.coinbaseAccess ? true : false
     },
 
     toJSON: function() {
@@ -174,34 +174,34 @@ module.exports = {
     } else {
       next();
     }
-  },
-
-  afterCreate: function(values, callback) {
-    HistoryService.write('User', values);
-    callback();
-
-    // TODO: Send activation email
-  },
-  afterUpdate: function(values, callback) {
-    HistoryService.write('User', values);
-    callback();
-
-    // TOOD: If email changed, send activation email
-  },
-  afterDestroy: function(terms, callback) {
-    // TODO: Should we really alloy entity to be destroyed? Probably shoul do a soft delete
-    User
-      .findOne(terms)
-      .done(function(error, user) {
-        if (error) {
-          sails.log.error(error);
-        } else {
-          // TODO: Should we really remove history data when the entity is destroyed?
-          HistoryService.remove('User', user.id);
-        }
-
-        callback();
-      });
   }
+
+  // afterCreate: function(values, callback) {
+  //   HistoryService.write('User', values);
+  //   callback();
+
+  //   // TODO: Send activation email
+  // },
+  // afterUpdate: function(values, callback) {
+  //   HistoryService.write('User', values);
+  //   callback();
+
+  //   // TOOD: If email changed, send activation email
+  // },
+  // afterDestroy: function(terms, callback) {
+  //   // TODO: Should we really alloy entity to be destroyed? Probably shoul do a soft delete
+  //   User
+  //     .findOne(terms)
+  //     .done(function(error, user) {
+  //       if (error) {
+  //         sails.log.error(error);
+  //       } else {
+  //         // TODO: Should we really remove history data when the entity is destroyed?
+  //         HistoryService.remove('User', user.id);
+  //       }
+
+  //       callback();
+  //     });
+  // }
 
 };

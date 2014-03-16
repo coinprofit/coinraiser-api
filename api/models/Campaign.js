@@ -22,12 +22,26 @@ module.exports = {
       type: 'float',
       required: true
     },
+    raised: {
+      type: 'float',
+      defaultsTo: 0
+    },
+    pledged: {
+      type: 'float',
+      defaultsTo: 0
+    },
     logo: {
       type: 'string'
     },
     user: {
       model: 'user',
       required: true
+    },
+    addressOwner: {
+      type: 'string'
+    },
+    addressEscrow: {
+      type: 'string'
     }
   }
 

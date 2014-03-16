@@ -26,26 +26,23 @@ module.exports.policies = {
   // },
 
   'user': {
-    'me': ['isAuthenticated'], //hasValidToken']
-    // 'find': 'isNotCollection'
-    'balance': ['isAuthenticated','isLinked']
+    'create': ['cleanUser'],
+    'update': ['isAuthenticated','cleanUser','cleanUpdateUser'], //,'isOwner']
+    'destroy': false,
+    // 'find': ['isNotCollection'],
+    'me': ['isAuthenticated'] //hasValidToken']
+    // 'balance': ['isAuthenticated','isLinked'],
   },
-
   'campaign': {
-    'create': ['isAuthenticated','useCurrentUser'],
-    'destroy': ['isAuthenticated'], //,'isOwner'],
-    'update': ['isAuthenticated'] //,'isOwner']
+    'create': ['isAuthenticated','useCurrentUser','cleanCampaign'],
+    'update': ['isAuthenticated','removeUser','cleanCampaign','cleanUpdateCampaign'], //,'isOwner']
+    'destroy': false
   },
   'donation': {
-    'create': ['isAuthenticated','useCurrentUser'],
-    'destroy': ['isAuthenticated'], //,'isOwner'],
-    'update': ['isAuthenticated'] //,'isOwner']
+    'create': ['isAuthenticated','useCurrentUser','cleanDonation'],
+    'update': ['isAuthenticated','removeUser','cleanDonation','cleanUpdateDonation'], //,'isOwner']
+    'destroy': false
   },
-  'iou': {
-    'create': ['isAuthenticated','useCurrentUser'],
-    'destroy': ['isAuthenticated'], //,'isOwner'],
-    'update': ['isAuthenticated'] //,'isOwner']
-  }
 
   // ---- Endpoints require authentication by default ----
 

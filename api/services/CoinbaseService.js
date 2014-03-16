@@ -27,7 +27,7 @@ module.exports = {
 
     function makeRequest(next) {
       var params = {};
-      if (user.coinbaseAccess) {
+      if (user.isLinked()) {
         params.access_token = user.coinbaseAccess;
       }
       inst.api.account.balance(next, params);
@@ -46,7 +46,7 @@ module.exports = {
 
     function makeRequest(next) {
       var params = {};
-      if (user.coinbaseAccess) {
+      if (user.isLinked()) {
         params.access_token = user.coinbaseAccess;
       }
       inst.api.account.changes(next, params);
@@ -55,7 +55,7 @@ module.exports = {
     CoinbaseService.tokenRefresher(user, makeRequest, done);
   },
 
-  createReceiveAddress: function(user, done) {
+  createReceiveAddress: function(user, props, done) {
     if (!inst) {
       return done({
         message: 'Coinbase provider not initialized'
@@ -63,8 +63,8 @@ module.exports = {
     }
 
     function makeRequest(next) {
-      var params = {};
-      if (user.coinbaseAccess) {
+      var params = props || {};
+      if (user.isLinked()) {
         params.access_token = user.coinbaseAccess;
       }
       inst.api.account.receiveAddress.create(next, params);
@@ -134,7 +134,6 @@ module.exports = {
     action(apiHandler);
 
   }
-
 
 };
 
