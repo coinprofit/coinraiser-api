@@ -10,8 +10,6 @@ module.exports = function(req, res, next) {
     delete req.body.resetToken;
     delete req.body.activationToken;
     delete req.body.activated;
-    delete req.body.coinbaseAccess;
-    delete req.body.coinbaseRefresh;
   }
   return next();
 };
