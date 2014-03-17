@@ -44,7 +44,7 @@ module.exports.policies = {
     'create': ['isAuthenticated','useCurrentUser','cleanDonation'],
     'update': false, // ['isAuthenticated','removeUser','cleanDonation','cleanUpdateDonation'], //,'isOwner']
     'destroy': false,
-    'donate': ['isAuthenticated','isLinked','isDonationOwner']
+    'fulfill': ['isAuthenticated','isLinked','isDonationOwner']
   },
 
   // ---- Endpoints require authentication by default ----

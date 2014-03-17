@@ -22,7 +22,7 @@ var math = require('mathjs')({
 
 module.exports = {
 
-  donate: function(req, res) {
+  fulfill: function(req, res) {
 
     var donation = req.donation;
     var campaign = donation.campaign;
@@ -402,17 +402,15 @@ module.exports = {
         }
         else {
           // Donation is actually a pledge
-          sails.log.warn('TODO: Implement creating donation for unlinked user');
+          sails.log.info('Creating pledge for unlinked user '+user.username);
 
           // Get this donation's campaign and all of its donations
-          // Campaign.findOneById(theCampaign.id).populate('donations').exec(function(err, campaign) {
+          Campaign.findOneById(theCampaign.id).populate('donations').exec(function(err, campaign) {
 
-            // if (err) {
-            //   sails.log.error('Failed to find campaign', err);
-            //   res.badRequest(err);
-            // }
-
-            var campaign = theCampaign;
+            if (err) {
+              sails.log.error('Failed to find campaign', err);
+              return res.badRequest(err);
+            }
 
             console.log('campaign', campaign, campaign.donations.length);
 
@@ -429,7 +427,7 @@ module.exports = {
                 // output.raised = math.select(output.raised).add(donation.amount);
                 output.raised = math.number(math.eval(output.raised+'+'+donation.amount));
               }
-              // console.log(output);
+              console.log(output);
               return output;
             }, { pledged: 0, raised: 0});
 
@@ -483,7 +481,7 @@ module.exports = {
 
             });
 
-          // });
+          });
 
 
 

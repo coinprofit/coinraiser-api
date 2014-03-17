@@ -93,7 +93,11 @@ module.exports.routes = {
   },
   'post /donations/:id/donate': {
     controller: 'donation',
-    action: 'donate'
+    action: 'fulfill'
+  },
+  'post /donations/:id/fulfill': {
+    controller: 'donation',
+    action: 'fulfill'
   }
 
   // 'post /campaigns': {
