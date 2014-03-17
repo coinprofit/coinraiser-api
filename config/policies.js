@@ -30,18 +30,21 @@ module.exports.policies = {
     'update': ['isAuthenticated','cleanUser','cleanUpdateUser'], //,'isOwner']
     'destroy': false,
     // 'find': ['isNotCollection'],
-    'me': ['isAuthenticated'] //hasValidToken']
+    'me': ['isAuthenticated'], //hasValidToken']
+    'transactions': ['isAuthenticated'] //hasValidToken']
     // 'balance': ['isAuthenticated','isLinked'],
   },
   'campaign': {
     'create': ['isAuthenticated','useCurrentUser','cleanCampaign'],
     'update': ['isAuthenticated','removeUser','cleanCampaign','cleanUpdateCampaign'], //,'isOwner']
-    'destroy': false
+    'destroy': false,
+    'claim': ['isAuthenticated','isLinked','isCampaignOwner']
   },
   'donation': {
     'create': ['isAuthenticated','useCurrentUser','cleanDonation'],
     'update': false, // ['isAuthenticated','removeUser','cleanDonation','cleanUpdateDonation'], //,'isOwner']
-    'destroy': false
+    'destroy': false,
+    'donate': ['isAuthenticated','isLinked','isDonationOwner']
   },
 
   // ---- Endpoints require authentication by default ----

@@ -55,6 +55,26 @@ module.exports = {
     CoinbaseService.tokenRefresher(user, makeRequest, done);
   },
 
+  getTransactions: function(user, done) {
+    if (!inst) {
+      return done({
+        message: 'Coinbase provider not initialized'
+      });
+    }
+
+    console.log('keys',_.keys(inst.api));
+
+    function makeRequest(next) {
+      var params = {};
+      if (user.isLinked()) {
+        params.access_token = user.coinbaseAccess;
+      }
+      inst.api.transactions(next, params);
+    }
+
+    CoinbaseService.tokenRefresher(user, makeRequest, done);
+  },
+
   createReceiveAddress: function(user, props, done) {
     if (!inst) {
       return done({

@@ -52,6 +52,23 @@ module.exports = {
     res.json(obj);
   },
 
+  transactions: function(req, res) {
+    var user = req.user;
+    if (user.isLinked()) {
+      CoinbaseService.getTransactions(user, function(err, transactions) {
+        if (err) {
+          res.badRequest({
+            message: err
+          });
+        }
+        res.json({
+          user: user.toJSON(),
+          transactions: transactions
+        });
+      });
+    }
+  },
+
   // balance: function(req, res) {
   //   var user = req.user;
   //   if (user.isLinked()) {

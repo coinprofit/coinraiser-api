@@ -57,10 +57,10 @@ module.exports.routes = {
     controller: 'user',
     action: 'me'
   },
-  // 'get /me/transactions': {
-  //   controller: 'user',
-  //   action: 'transactions'
-  // },
+  'get /me/transactions': {
+    controller: 'user',
+    action: 'transactions'
+  },
   // 'get /me/balance': {
   //   controller: 'user',
   //   action: 'balance'
@@ -83,14 +83,18 @@ module.exports.routes = {
     controller: 'campaign',
     action: 'update'
   },
-  // 'post /campaigns/:id/claim': {
-  //   controller: 'campaign',
-  //   action: 'claim'
-  // },
+  'post /campaigns/:id/claim': {
+    controller: 'campaign',
+    action: 'claim'
+  },
   'post /donations/:id': {
     controller: 'donation',
     action: 'update'
   },
+  'post /donations/:id/donate': {
+    controller: 'donation',
+    action: 'donate'
+  }
 
   // 'post /campaigns': {
   //   controller: 'campaign',

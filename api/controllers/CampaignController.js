@@ -134,6 +134,31 @@ module.exports = {
 
   },
 
+  claim: function(req, res) {
+
+    var user = req.user;
+    var campaign = req.campaign;
+
+    sails.log.info('Funds in campaign '+campaign.id+' ('+campaign.name+') have been claimed by user '+user.id+' ('+user.username+')');
+
+    // Check if user model is linked
+    if (user.isLinked()) {
+
+      // Get bitcoin address from campaign
+      console.log('claim', campaign.addressOwner, campaign.addressEscrow);
+
+    }
+    else {
+      res.badRequest({
+        message: 'You must link your account to Coinbase before you can claim the funds in this campaign'
+      });
+    }
+
+
+    res.json({
+      message: 'Not implemented'
+    });
+  },
 
   /**
    * Overrides for the settings in `config/controllers.js`

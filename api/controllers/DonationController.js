@@ -22,6 +22,148 @@ var math = require('mathjs')({
 
 module.exports = {
 
+  donate: function(req, res) {
+
+    var donation = req.donation;
+    var campaign = donation.campaign;
+    var user = req.user;
+
+    // Check if donation has already been converted
+    if (donation.transaction) {
+      // If already converted, return
+      return res.json({
+        message: 'This donation has already been completed',
+        transaction: donation.transaction
+      });
+    }
+
+    // Convert from mbtc to btc
+    var amount = math.number(math.eval(donation.amount+'/1000'));
+
+    var props = {
+      transaction: {
+        to: campaign.addressOwner || campaign.addressEscrow,
+        amount: ''+amount,
+        notes: donation.comment
+      }
+    };
+
+    // Send money from user account to campaign
+    CoinbaseService.sendMoney(user, props, function(err, results) {
+
+      if (err) {
+        sails.log.error('Failed to send money', err);
+        return req.badRequest(err);
+      }
+
+      if (results.success) {
+        // Funds have been successfully sent
+        sails.log.info('Donation created and BTC sent to linked user', results.transaction);
+
+        // Update donation model with transacction results
+        donation.transaction = results.transaction;
+      }
+      else {
+        // Unable to send fund, due to invalid amount entered, bad address, unavailable funds, etc.
+        sails.log.error('Donation created and user linked, but unable to send money', results.errors);
+      }
+
+      // Save donation model
+      donation.save(function(err, updatedDonation) {
+
+        if (err) {
+          sails.log.error('Failed to update donation', err);
+          res.badRequest(err);
+        }
+
+        // Get all donations in this campaign
+        //
+        // Add up the total donation amounts
+        //
+        // Update campaign with new raised and pledged amounts
+
+        // Get this donation's campaign and all of its donations
+        Campaign.findOneById(updatedDonation.campaign).populate('donations').exec(function(err, theCampaign) {
+
+          if (err) {
+            sails.log.error('Failed to find campaign', err);
+            res.badRequest(err);
+          }
+
+          // Iterate over all donations in campaign, getting total amount raised and pledged
+          var sum = _.reduce(theCampaign.donations, function(output, donation) {
+            // console.log(output,donation.amount);
+            if (donation.isPledge()) {
+              // output.pledged = Math.round(1e8 * parseFloat(output.pledged)) + Math.round(1e8 * parseFloat(donation.amount));
+              // output.pledged = math.select(output.pledged).add(donation.amount);
+              output.pledged = math.number(math.eval(output.pledged+'+'+donation.amount));
+            }
+            else {
+              // output.raised = Math.round(1e8 * parseFloat(output.raised)) + Math.round(1e8 * parseFloat(donation.amount));
+              // output.raised = math.select(output.raised).add(donation.amount);
+              output.raised = math.number(math.eval(output.raised+'+'+donation.amount));
+            }
+            // console.log(output);
+            return output;
+          }, { pledged: 0, raised: 0});
+
+          console.log('sum of donations', sum);
+
+          // Update campaign with new amounts
+          theCampaign.pledged = sum.pledged;
+          theCampaign.raised = sum.raised;
+          // campaign.pledged = sum.pledged.toString();
+          // campaign.raised = sum.raised.toString();
+          // campaign.pledged = sum.pledged / 1e8;
+          // campaign.raised = sum.raised / 1e8;
+
+          // console.log('pledged', campaign.pledged);
+          // console.log('raised', campaign.raised);
+
+          // Save campaign
+          theCampaign.save(function(err, updatedCampaign) {
+
+            if (err) {
+              sails.log.error('Failed to update campaign', err);
+              res.badRequest(err);
+            }
+
+            // If we have the pubsub hook, use the model class's publish method
+            // to notify all subscribers about the created item
+            if (sails.hooks.pubsub) {
+
+              if (req.isSocket) {
+                Donation.subscribe(req, updatedDonation);
+                // Introduce to classroom
+                Donation.introduce(updatedDonation);
+              }
+
+              Donation.publishCreate(updatedDonation, !sails.config.blueprints.mirror && req);
+            }
+
+            // Set status code (HTTP 201: Created)
+            res.status(201);
+
+            // Send JSONP-friendly response if it's supported
+            // if ( jsonp ) {
+            //   return res.jsonp(updatedDonation.toJSON());
+            // }
+
+            // // Otherwise, strictly JSON.
+            // else {
+              return res.json(updatedDonation.toJSON());
+            // }
+
+
+          });
+
+        });
+
+      });
+
+    });
+
+  },
 
   create: function (req, res) {
 
@@ -91,11 +233,15 @@ module.exports = {
         if (err) return res.serverError(err);
 
         var user = req.user;
+
+        // Convert from mbtc to btc
+        var amount = math.number(math.eval(data.amount+'/1000'));
+
         var props = {
           transaction: {
             to: theCampaign.addressOwner || theCampaign.addressEscrow,
-            amount: ''+data.amount, // TOOD: Convert from mbtc to btc
-            notes: data.comments
+            amount: ''+amount,
+            notes: data.comment
           }
         };
 
@@ -108,9 +254,14 @@ module.exports = {
               return req.badRequest(err);
             }
 
-            console.log('send money transaction',results);
+            if (results.success) {
+              // Funds have been successfully sent
+              sails.log.info('Donation created and BTC sent to linked user', results.transaction);
 
-            if (!results.success) {
+              // Update donation model with transacction results
+              newInstance.transaction = results.transaction;
+            }
+            else {
               // Unable to send fund, due to invalid amount entered, bad address, unavailable funds, etc.
 
               sails.log.error('Donation created and user linked, but unable to send money', results.errors);
@@ -143,13 +294,6 @@ module.exports = {
               // else {
               //   return res.json(newInstance.toJSON());
               // }
-            }
-            else {
-              // Funds have been successfully sent
-
-              // Update donation model with transacction results
-              newInstance.transaction = results.transaction;
-
             }
 
             // Save donation model
