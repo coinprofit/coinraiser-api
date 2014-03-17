@@ -29,7 +29,7 @@ module.exports.policies = {
     'create': ['cleanUser'],
     'update': ['isAuthenticated','cleanUser','cleanUpdateUser'], //,'isOwner']
     'destroy': false,
-    // 'find': ['isNotCollection'],
+    'find': ['isNotCollection'],
     'me': ['isAuthenticated'], //hasValidToken']
     'transactions': ['isAuthenticated'] //hasValidToken']
     // 'balance': ['isAuthenticated','isLinked'],

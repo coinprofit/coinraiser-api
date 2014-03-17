@@ -221,6 +221,9 @@ module.exports = {
     Campaign.findOneById(data.campaign).populate('donations').exec(function(err, theCampaign) {
       if (err) return res.badRequest(err);
 
+
+      console.log('theCampaign.donation.length', theCampaign.donations.length);
+
       // Create Donation model
 
       // Create new instance of model using data from params
@@ -315,10 +318,13 @@ module.exports = {
               // Get this donation's campaign and all of its donations
               Campaign.findOneById(updatedDonation.campaign).populate('donations').exec(function(err, campaign) {
 
+
                 if (err) {
                   sails.log.error('Failed to find campaign', err);
-                  res.badRequest(err);
+                  return res.badRequest(err);
                 }
+
+                console.log('campaign.donations.length', campaign.donations.length);
 
                 // Iterate over all donations in campaign, getting total amount raised and pledged
                 var sum = _.reduce(campaign.donations, function(output, donation) {

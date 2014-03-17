@@ -9,31 +9,30 @@
   - ~~Add support for using refresh_token to get new access_token~~
     - ~~If a request fails to auth, then refresh tokens~~
   - When a Campaign is created
-    - If user has linked to coinbase account, create wallet in user's coinbase account (wallet)
-    - If user has not linked to coinbase account, create wallet in CoinRaiser's coinbase account (walletEscrow)
-    - If connecting to linked user coinbase account fails, then fall back on using CoinRaiser account
+    - ~~If user has linked to coinbase account, create wallet in user's coinbase account (wallet)~~
+    - ~~If user has not linked to coinbase account, create wallet in CoinRaiser's coinbase account (walletEscrow)~~
+    - ~~If connecting to linked user coinbase account fails, then fall back on using CoinRaiser account~~
   - When user links to coinbase
     - Iterate through user's campaigns
       - Create wallet in user's coinbase account for each campaign (wallet)
       - Transfer funds from coinraiser escrow wallet (walletEscrow) for campaign to user's coinbase wallet (wallet) for the campaign
-    - Iterate through user's ious
-      - TBD
-      - For each IOU, prompt user to complete transaction
-      - Completing transaction will convert an IOU into a Donation
-      - New Donation is created and existing IOU is marked as 'paid' or removed.
+    - Iterate through user's Donations
+      - For each Donation that is not complete (Pledge), prompt user to complete transaction
+      - Completing transaction will convert a pledge into a full Donation
+      - Donation is marked as paid by adding transaction details.
   - When a Donation is created
-    - Use Coinbase API to send BTC from donating user to campaign wallet
-  - When a Claim is created
+    - ~~Use Coinbase API to send BTC from donating user to campaign wallet~~
+  - When a Campaign is claimed
     - Use Coinbase API to send BTC from campaign escrow wallet to campaign owner's wallet
 - Model Updates
   - User
     - avatar - upload image for user, or use Gravatar as fallback
   - Campaign
-    - wallet - wallet address within the User's coinbase account
-    - walletEscrow - wallet address within CoinRaiser's coinbase account
-    - images - array of images for this campaign
+    - ~~wallet - wallet address within the User's coinbase account~~
+    - ~~walletEscrow - wallet address within CoinRaiser's coinbase account~~
+    - ~~images - array of images for this campaign~~
   - Donation
-    - paid - boolean indicator for whether donation was paid or not. if false, donation acts as an IOU.
+    - ~~transaction - object containing coinbase transaction details, indicator for whether donation was paid or not. if false, donation acts as a pledge.~~
     - paidAt - date donation was actually paid
   - Claim - new model for when a user claims money from a campaign (should this be called *Transaction*?)
     - user - user making the claim (must be owner of the campaign) who is receiving funds
@@ -46,7 +45,7 @@
     - uri
 - Middleware
   - Users
-    - Remove ability to get list of all users
+    - ~~Remove ability to get list of all users~~
   - Donation
     - Only allow donation to be paid if user is linked to Coinbase
     - Only allow donation to be paid if it is less than they have in their coinbase wallet
