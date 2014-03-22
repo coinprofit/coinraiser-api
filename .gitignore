@@ -43,6 +43,8 @@ config/local.js
 
 curls.md
 
+*.sublime-project
+*.sublime-workspace
 
 
 ################################################
